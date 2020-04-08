@@ -4,37 +4,39 @@ void main() {
   runApp(TicTacToe());
 }
 
-class Square extends StatefulWidget {
-  final int id;
-  Square({this.id});
+class Square extends StatelessWidget {
+  final int index;
+  final TextStyle _biggerFont = const TextStyle(fontSize: 32);
 
-  @override
-  _SquareState createState() => _SquareState();
-}
-
-class _SquareState extends State<Square> {
-  bool _enabled = false;
+  Square({this.index});
 
   @override
   Widget build(BuildContext context) {
-    if (_enabled) {
-      return Center(
-        child: ListTile(
-          title: Text('${widget.id}'),
-        ),
-      );
-    } else {
-      return Center(
-        child: ListTile(
-          title: Text(''),
-          onTap: () {
-            setState(() {
-              _enabled = true;
-            });
-          },
-        ),
-      );
-    }
+    return Center(
+      child: Text(
+          '$index',
+          style: _biggerFont,
+      )
+    );
+  }
+}
+
+class Grid extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      padding: const EdgeInsets.all(20),
+      crossAxisSpacing: 2,
+      mainAxisSpacing: 2,
+      crossAxisCount: 3,
+      children: List.generate(9, (index) {
+        return Container(
+          padding: const EdgeInsets.all(8),
+          child: Square(index: index),
+          color: Colors.teal,
+        );
+      }),
+    );
   }
 }
 
@@ -45,7 +47,7 @@ class Game extends StatelessWidget{
       appBar: AppBar(
         title: const Text('Tic-Tac-Toe'),
       ),
-      body: Square(id: 0),
+      body: Grid(),
     );
   }
 }
@@ -53,7 +55,6 @@ class Game extends StatelessWidget{
 class TicTacToe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return MaterialApp(
       title: 'Tic-Tac-Toe',
       home: Game(),
